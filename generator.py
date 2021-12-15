@@ -4,96 +4,103 @@ from config import *
 from PIL import Image
 from pathlib import Path
 
-ASSETFOLDER = 'assets/'
-GENERATEDFOLDER = 'generated/'
-
 def generateRandomNumber(min, max):
-    return random.randint(min, max)
+	return random.randint(min, max)
 
-def createBodyDict():
-    bodyDict = {
-        1: 'ghost',
-        2: 'mario',
-        3: 'megaman'
-    }
-    return bodyDict
+def generateEthMetaData(tokenID, attributes, bgColor):
+	metadata = {}
 
-def createExtraDict():
-    extraDict = {
-        1: 'heart',
-        2: 'pizza',
-        3: 'block'
-    }
-    return extraDict
+	metadata["title"] = "Asset Metadata"
+	metadata["type"] = "object"
 
-def createColorDict():
-    colorDict = {
-        1: (228, 150, 150),
-        2: (150, 228, 150),
-        3: (150, 150, 228)
-    }
-    return colorDict
+	metadata["properties"] = {}
+	metadata["properties"]["name"] = str(tokenID)
+	metadata["properties"]["description"] = TOKEN_DESCRIPTION
+	metadata["properties"]["image"] = 'url' #needs to be setup later
+	metadata["properties"]["background_color"] = bgColor
+	metadata["properties"]["attributes"] = []
 
-def generateMetaData(tokenID, attributes):
-    metadata = {}
-    metadata["name"] = str(tokenID)
-    metadata["description"] = 'Description of item'
-    metadata["image"] = 'url'
-    metadata["background_color"] = 'color'
-    metadata["attributes"] = []
-    metadata["attributes"].append(
-    {
-        "trait_type": "body",
-        "value": attributes["body"]
-    })
-    metadata["attributes"].append(
-    {
-        "trait_type": "extra",
-        "value": attributes["extra"]
-    })
-    return metadata
+	for attr in attributes:
+		toAdd = {
+			"trait_type": attr,
+			"value": attributes[attr]
+		}
+		metadata["properties"]["attributes"].append(toAdd)
+
+	return metadata
+
+def generateSolMetaData(tokenID, attributes):
+	metadata = {}
+
+	metadata["name"] = str(tokenID)
+	metadata["description"] = TOKEN_DESCRIPTION
+	metadata["symbol"] = COLLECTION_SYMBOL
+	metadata["image"] = 'uri' #needs to be setup later
+	metadata["seller_fee_basis_points"] = SELLER_FEE
+
+	metadata["collection"] = {
+		"name": COLLECTION_NAME,
+	}
+
+	metadata["properties"] = {}
+	metadata["properties"]["category"] = "image"
+	metadata["properties"]["creators"] = [
+		{
+        	"address": OWNER_1_ADDRESS,
+        	"share": 50
+      	},
+		{
+        	"address": OWNER_2_ADDRESS,
+        	"share": 50
+      	}
+	]
+
+	metadata["attributes"] = []
+	for attr in attributes:
+		toAdd = {
+			"trait_type": attr,
+			"value": attributes[attr]
+		}
+		metadata["attributes"].append(toAdd)
+
+	return metadata
 
 def generateImage(base, attributes):
-    img0 = Image.open(ASSETFOLDER + "body/" + str(attributes['body']) + ".png").convert("RGBA")
-    img0 = img0.resize((600, 600), resample=Image.NEAREST)
-    img1 = Image.open(ASSETFOLDER + "extra/" + str(attributes['extra']) + ".png").convert("RGBA")
-    img1 = img1.resize((200, 200), resample=Image.NEAREST)
+	for layer in ATTRIBUTES:
+		img = Image.open(ASSET_FOLDER + layer + "/" + str(attributes[layer]) + '.png').convert("RGBA")
+		img = img.resize((IMAGE_X_PIXELS, IMAGE_Y_PIXELS), resample=Image.NEAREST)
+		base.paste(img, (0, 0), img)
 
-    base.paste(img0, (0, 0), img0)
-    base.paste(img1, (60, 260), img1)
-
-    return base
+	return base
 
 def saveToken(token, tokenID, metadata):
-    path = Path(GENERATEDFOLDER + str(tokenID) + '.png')
-    token.save(path, "PNG")
+	path = Path(GENERATED_FOLDER + str(tokenID) + '.png')
+	token.save(path, "PNG")
 
-    with open(GENERATEDFOLDER + str(tokenID) + '.json', 'w') as outfile:
-        json.dump(metadata, outfile, indent=4)
+	with open(GENERATED_FOLDER + str(tokenID) + '.json', 'w') as outfile:
+		json.dump(metadata, outfile, indent=4)
 
 def main(generationCount):
-    bodyDict = createBodyDict()
-    extraDict = createExtraDict()
-    colorDict = createColorDict()
-    
-    for i in range(generationCount):
-        base = Image.new('RGB', (600, 600), colorDict[generateRandomNumber(1, 3)])
-        body = generateRandomNumber(1, 1)
-        extra = generateRandomNumber(1, 3)
+	for i in range(generationCount):
+		bgColor = generateRandomNumber(1, len(COLORS))
+		base = Image.new('RGB', (IMAGE_X_PIXELS, IMAGE_Y_PIXELS), COLORS[bgColor])
 
-        generationAtr = {
-            "body": body,
-            "extra": extra
-        }
+		attributeIndices = {}
+		metaAttributes = {}
 
-        metaAtr = {
-            "body": bodyDict[body],
-            "extra": extraDict[extra]
-        }
+		for attr in ATTRIBUTES:
+			attributeIndices[attr] = generateRandomNumber(1, len(ATTRIBUTES[attr]))
+			metaAttributes[attr] = ATTRIBUTES[attr][attributeIndices[attr]]
 
-        token = generateImage(base, generationAtr) # TODO - change this function to use the config file
-        metaData = generateMetaData(i, metaAtr)
 
-        saveToken(token, i, metaData)
+		token = generateImage(base, attributeIndices)
+
+		metadata = {}
+		if (METADATA_SCHEMA == "eth"):
+			metaData = generateEthMetaData(i, metaAttributes, bgColor)
+		elif (METADATA_SCHEMA == "sol"):
+			metaData = generateSolMetaData(i, metaAttributes)
+
+		saveToken(token, i, metaData)
 
 main(5)
