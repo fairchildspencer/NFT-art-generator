@@ -10,22 +10,19 @@ def generateRandomNumber(min, max):
 def generateEthMetaData(tokenID, attributes, bgColor):
 	metadata = {}
 
-	metadata["title"] = "Asset Metadata"
-	metadata["type"] = "object"
-
-	metadata["properties"] = {}
-	metadata["properties"]["name"] = str(tokenID)
-	metadata["properties"]["description"] = TOKEN_DESCRIPTION
-	metadata["properties"]["image"] = 'url' #needs to be setup later
-	metadata["properties"]["background_color"] = bgColor
-	metadata["properties"]["attributes"] = []
+	metadata["name"] = str(tokenID)
+	metadata["description"] = TOKEN_DESCRIPTION
+	metadata["image"] = 'url' #needs to be setup later
+	metadata["background_color"] = bgColor
+	metadata["attributes"] = []
 
 	for attr in attributes:
-		toAdd = {
-			"trait_type": attr,
-			"value": attributes[attr]
-		}
-		metadata["properties"]["attributes"].append(toAdd)
+		if (attributes[attr] != ""):
+			toAdd = {
+				"trait_type": attr,
+				"value": attributes[attr]
+			}
+			metadata["attributes"].append(toAdd)
 
 	return metadata
 
@@ -67,9 +64,12 @@ def generateSolMetaData(tokenID, attributes):
 
 def generateImage(base, attributes):
 	for layer in ATTRIBUTES:
+		if (ATTRIBUTES[layer][attributes[layer]] == ''):  # skip the layer if the random number is out of range
+			continue
+
 		img = Image.open(ASSET_FOLDER + layer + "/" + str(attributes[layer]) + '.png').convert("RGBA")
-		img = img.resize((IMAGE_X_PIXELS, IMAGE_Y_PIXELS), resample=Image.NEAREST)
 		base.paste(img, (0, 0), img)
+		base = base.resize((IMAGE_X_PIXELS, IMAGE_Y_PIXELS), resample=Image.NEAREST)
 
 	return base
 
