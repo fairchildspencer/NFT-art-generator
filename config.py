@@ -1,17 +1,5 @@
-#Metadata schema
-METADATA_SCHEMA = "eth"
+#Metadata
 TOKEN_DESCRIPTION = "An astronaut homie that'll be your best friend."
-
-#Sol only metadata attributes
-COLLECTION_NAME = "MoonShooters"
-COLLECTION_SYMBOL = "MS"
-SELLER_FEE = 1000
-OWNER_1_ADDRESS = "0x0000000000000000000000000000000000000000"
-OWNER_2_ADDRESS = "0x0000000000000000000000000000000000000000"
-
-#Image size
-IMAGE_X_PIXELS = 350
-IMAGE_Y_PIXELS = 350
 
 #location of image assets and where the files will be generated
 ASSET_FOLDER = 'assets/'
@@ -20,13 +8,21 @@ GENERATED_FOLDER = 'generated/'
 # Dictionary of attributes, in order of layer depth (lowest first)
 ATTRIBUTES = {
     'jetpack': {
-        1: 'katanas',
+        1: 'katanas', #  TODO - change the file names to be associated with the attribute not a number so you can map multiple to different numbers
         2: 'scuba tank',
         3: 'space O2',
         4: '',
         5: '',
         6: '',
         7: '',
+        8: '',
+        9: '',
+        10: '',
+        11: '',
+        12: '',
+        13: '',
+        14: '',
+        15: '',
     },
     'human': {
         1: 'human 1',
