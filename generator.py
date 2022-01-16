@@ -7,14 +7,19 @@ from pathlib import Path
 def generateRandomNumber(min, max):
 	return random.randint(min, max)
 
-def generateEthMetaData(tokenID, attributes, bgColor):
+def generateEthMetaData(tokenID, attributes, bg):
 	metadata = {}
 
 	metadata["name"] = str(tokenID)
 	metadata["description"] = TOKEN_DESCRIPTION
 	metadata["image"] = 'url' #needs to be setup later
-	metadata["background_color"] = bgColor
 	metadata["attributes"] = []
+
+	bgColor = {
+		"trait_type": "background",
+		"value": BACKGROUND[bg]
+	}
+	metadata["attributes"].append(bgColor)
 
 	for attr in attributes:
 		if (attributes[attr] != ""):
@@ -67,9 +72,8 @@ def generateImage(base, attributes):
 		if (ATTRIBUTES[layer][attributes[layer]] == ''):  # skip the layer if the random number is out of range
 			continue
 
-		img = Image.open(ASSET_FOLDER + layer + "/" + str(attributes[layer]) + '.png').convert("RGBA")
+		img = Image.open(ASSET_FOLDER + layer + "/" + str(attributes[layer]) + '.png')
 		base.paste(img, (0, 0), img)
-		base = base.resize((IMAGE_X_PIXELS, IMAGE_Y_PIXELS), resample=Image.NEAREST)
 
 	return base
 
@@ -82,8 +86,8 @@ def saveToken(token, tokenID, metadata):
 
 def main(generationCount):
 	for i in range(generationCount):
-		bgColor = generateRandomNumber(1, len(COLORS))
-		base = Image.new('RGB', (IMAGE_X_PIXELS, IMAGE_Y_PIXELS), COLORS[bgColor])
+		bg = generateRandomNumber(1, len(BACKGROUND))
+		base = Image.open(ASSET_FOLDER + 'background/' + str(bg) + '.png')
 
 		attributeIndices = {}
 		metaAttributes = {}
@@ -97,10 +101,10 @@ def main(generationCount):
 
 		metadata = {}
 		if (METADATA_SCHEMA == "eth"):
-			metaData = generateEthMetaData(i, metaAttributes, bgColor)
+			metaData = generateEthMetaData(i, metaAttributes, bg)
 		elif (METADATA_SCHEMA == "sol"):
 			metaData = generateSolMetaData(i, metaAttributes)
 
 		saveToken(token, i, metaData)
 
-main(5)
+main(30)
