@@ -42,6 +42,8 @@ ATTRIBUTES = {
         8: 'turtle neck',
         9: 'tuxedo',
         10: 'white space suit',
+        11: 'Puffy Coat',
+        12: 'Gondolier',
     },
     'faceshield': {
         1: 'black',
@@ -51,7 +53,9 @@ ATTRIBUTES = {
         5: 'gold',
         6: 'orange',
         7: 'purple',
-        8: 'silver'
+        8: 'silver',
+        9: 'Tie Dye',
+        10: 'Alien Splat',
     },
     'headwear': {
         1: 'cowboy hat',
@@ -62,14 +66,18 @@ ATTRIBUTES = {
         6: 'moonshooters cap',
         7: 'party hat',
         8: 'ponytail',
-        9: '',
-        10: '',
-        11: '',
+        9: 'Propellor Hat',
+        10: 'Bucket Hat',
+        11: 'Crown',
         12: '',
         13: '',
         14: '',
         15: '',
         16: '',
+        17: '',
+        18: '',
+        19: '',
+        20: '',
     }
 }
 

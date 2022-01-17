@@ -33,10 +33,10 @@ def generateEthMetaData(tokenID, attributes, bg):
 
 def generateImage(base, currentAtrs):
 	for layer in ATTRIBUTES:
-		if (ATTRIBUTES[layer][currentAtrs[layer]] == ''):  # skip the layer if the random number is out of range
+		if (currentAtrs[layer] == ''):  # skip the layer if the random number is out of range
 			continue
 
-		img = Image.open(ASSET_FOLDER + layer + "/" + str(currentAtrs[layer]) + '.png')
+		img = Image.open(ASSET_FOLDER + layer + "/" + currentAtrs[layer] + '.png')
 		base.paste(img, (0, 0), img)
 
 	return base
@@ -51,17 +51,17 @@ def saveToken(token, tokenID, metadata):
 def main(generationCount):
 	for i in range(generationCount):
 		bg = generateRandomNumber(1, len(BACKGROUND))
-		base = Image.open(ASSET_FOLDER + 'background/' + str(bg) + '.png')
+		base = Image.open(ASSET_FOLDER + 'background/' + BACKGROUND[bg] + '.png')
 
 		attributeIndices = {}
 		metaAttributes = {}
 
 		for attr in ATTRIBUTES:
-			attributeIndices[attr] = generateRandomNumber(1, len(ATTRIBUTES[attr]))
-			metaAttributes[attr] = ATTRIBUTES[attr][attributeIndices[attr]]
+			# attributeIndices[attr] = generateRandomNumber(1, len(ATTRIBUTES[attr]))
+			metaAttributes[attr] = ATTRIBUTES[attr][generateRandomNumber(1, len(ATTRIBUTES[attr]))]
 
 
-		token = generateImage(base, attributeIndices)
+		token = generateImage(base, metaAttributes)
 
 		metaData = generateEthMetaData(i, metaAttributes, bg)
 
