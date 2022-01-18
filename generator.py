@@ -57,7 +57,6 @@ def main(generationCount):
 		metaAttributes = {}
 
 		for attr in ATTRIBUTES:
-			# attributeIndices[attr] = generateRandomNumber(1, len(ATTRIBUTES[attr]))
 			metaAttributes[attr] = ATTRIBUTES[attr][generateRandomNumber(1, len(ATTRIBUTES[attr]))]
 
 
@@ -67,4 +66,4 @@ def main(generationCount):
 
 		saveToken(token, i, metaData)
 
-main(10)
+main(30)
