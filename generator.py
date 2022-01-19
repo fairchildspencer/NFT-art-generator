@@ -31,10 +31,14 @@ def generateEthMetaData(tokenID, attributes, bg):
 
 	return metadata
 
-def generateImage(base, currentAtrs):
+def generateImage(bg, currentAtrs):
+	base = Image.open(ASSET_FOLDER + 'background/' + BACKGROUND[bg] + '.png')
+	FINAL_ATTRIBUTE_VALUES["background"][BACKGROUND[bg]] += 1
 	for layer in ATTRIBUTES:
 		if (currentAtrs[layer] == ''):  # skip the layer if the random number is out of range
 			continue
+
+		FINAL_ATTRIBUTE_VALUES[layer][currentAtrs[layer]] += 1
 
 		img = Image.open(ASSET_FOLDER + layer + "/" + currentAtrs[layer] + '.png')
 		base.paste(img, (0, 0), img)
@@ -42,28 +46,29 @@ def generateImage(base, currentAtrs):
 	return base
 
 def saveToken(token, tokenID, metadata):
-	path = Path(GENERATED_FOLDER + str(tokenID) + '.png')
+	path = Path(GENERATED_FOLDER + TOKENS + str(tokenID) + '.png')
 	token.save(path, "PNG")
 
-	with open(GENERATED_FOLDER + str(tokenID) + '.json', 'w') as outfile:
+	with open(GENERATED_FOLDER + METADATA + str(tokenID) + '.json', 'w') as outfile:
 		json.dump(metadata, outfile, indent=4)
+
+def saveFinalAttributeValues():
+	with open(GENERATED_FOLDER + STATISTICS + 'final_attribute_values.json', 'w') as outfile:
+		json.dump(FINAL_ATTRIBUTE_VALUES, outfile, indent=4)
 
 def main(generationCount):
 	for i in range(generationCount):
-		bg = generateRandomNumber(1, len(BACKGROUND))
-		base = Image.open(ASSET_FOLDER + 'background/' + BACKGROUND[bg] + '.png')
-
-		attributeIndices = {}
 		metaAttributes = {}
 
 		for attr in ATTRIBUTES:
 			metaAttributes[attr] = ATTRIBUTES[attr][generateRandomNumber(1, len(ATTRIBUTES[attr]))]
 
-
-		token = generateImage(base, metaAttributes)
+		bg = generateRandomNumber(1, len(BACKGROUND))
+		token = generateImage(bg, metaAttributes)
 
 		metaData = generateEthMetaData(i, metaAttributes, bg)
 
 		saveToken(token, i, metaData)
+		saveFinalAttributeValues()
 
-main(30)
+main(5)
