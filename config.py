@@ -55,7 +55,7 @@ FINAL_ATTRIBUTE_VALUES = {
         "Orange": 0,
         "Purple": 0,
         "Silver": 0,
-        "Tie Dye": 0,
+        "Rainbow": 0,
     },
     "headwear": {
         "Bucket Hat": 0,
@@ -199,14 +199,14 @@ ATTRIBUTES = {
     'faceshield': { # TODO broken and black should be ultra rare
         1: 'Black', # Rarity of Black is ~15% of all faceshields
         2: 'Blue',  # Rarity of Blue is ~15% of all faceshields
-        3: 'Broken', # Rarity of Broken is ~5% of all faceshields
-        4: 'Duct Taped', # Rarity of Duct Taped is ~5% of all faceshields
-        5: 'Gold', # Rarity of Gold is ~5% of all faceshields
+        3: 'Broken', # Rarity of Broken is ~3% of all faceshields
+        4: 'Duct Taped', # Rarity of Duct Taped is ~3% of all faceshields
+        5: 'Gold', # Rarity of Gold is ~6% of all faceshields
         6: 'Orange', # Rarity of Orange is ~15% of all faceshields
         7: 'Purple', # Rarity of Purple is ~15% of all faceshields
         8: 'Silver', # Rarity of Silver is ~15% of all faceshields
-        9: 'Tie Dye', # Rarity of Tie Dye is ~5% of all faceshields
-        10: 'Alien Splat', # Rarity of Alien Splat is ~5% of all faceshields
+        9: 'Rainbow', # Rarity of Rainbow is ~6% of all faceshields
+        10: 'Alien Splat', # Rarity of Alien Splat is ~6% of all faceshields
         11: 'Black',
         12: 'Black',
         13: 'Blue',
@@ -217,7 +217,19 @@ ATTRIBUTES = {
         18: 'Purple',
         19: 'Silver',
         20: 'Silver',
-
+        21: 'Black',
+        22: 'Blue',
+        23: 'Orange',
+        24: 'Purple',
+        25: 'Silver',
+        26: 'Gold',
+        27: 'Rainbow',
+        28: 'Alien Splat',
+        29: 'Black',
+        30: 'Blue',
+        31: 'Orange',
+        32: 'Purple',
+        33: 'Silver'
     },
     'headwear': { # Rarity of headwear is ~61%
         1: 'Cowboy Hat',
