@@ -71,4 +71,4 @@ def main(generationCount):
 		saveToken(token, i, metaData)
 		saveFinalAttributeValues()
 
-main(5)
+main(100)

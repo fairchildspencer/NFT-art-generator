@@ -37,7 +37,7 @@ FINAL_ATTRIBUTE_VALUES = {
         "Bolo Tie": 0,
         "Gondolier": 0,
         "Hoodie": 0,
-        "Moonshooters T-shirt": 0,
+        "Moonshooters T-Shirt": 0,
         "Orange Space Suit": 0,
         "Puffy Coat": 0,
         "Tropical": 0,
