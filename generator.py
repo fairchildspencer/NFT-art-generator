@@ -69,6 +69,6 @@ def main(generationCount):
 		metaData = generateEthMetaData(i, metaAttributes, bg)
 
 		saveToken(token, i, metaData)
-		saveFinalAttributeValues()
+	saveFinalAttributeValues()
 
 main(100)
